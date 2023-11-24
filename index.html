@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator BMI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <form name="bmiForm">
+    <div class="bmi-calculator">
+      <h1 style="margin-bottom: 1em;"> BMI Kalkulator</h1>
+      <div class="bmi-calculator-weight">
+        <input class="weight-slider" name="realweight" id="myWeight" type="range" min="25" max="180" value="60"/>
+        <p style="margin-top: 1.8em;">
+          BERAT BADAN: 
+          <input name="Berat" id="inputWeight" type="number" value="60" min="25" max="180" step="1" oninput="showValWeight(this.value)"/>
+          <span id="weight"></span> kg
+        </p>
+      </div>
+      <div class="bmi-calculator-height">
+        <input class="height-slider" name="realheight" id="myHeight" type="range" min="100" max="220" step="1" value="160">
+        <p style="margin-top: 1.8em;">
+          TINGGI BADAN:
+          <input name="Tinggi" id="inputHeight" type="number" value="160" min="100" max="220" step="1" oninput="showValHeight(this.value)"/>
+          <span id="height"></span> cm
+        </p>
+      </div>
+      <input class="button" type="button" value="HITUNG" onclick="calculateBmi()" style="margin-top: 0.5em">
+     <p style="margin-top: 1em;font-size: 1.2em;">
+       <strong>BMI Kamu:</strong>
+       <span id="hasil" style="font-size: 1.2em;margin-left: 8px;"></span>
+     </p>
+     <p></p>
+     <p>
+       <span id="evaluasi"></span>
+     </p>
+    </div>
+  </form>
+
+</body>
+
+<script>
+  // Define variables for range sliders
+// Weight variables
+const weightSlider = document.getElementById("myWeight");
+const weightOutput = document.getElementById("inputWeight");
+// Height variables
+const heightSlider = document.getElementById("myHeight");
+const heightOutput = document.getElementById("inputHeight");
+// Display slider value
+weightOutput.innerHTML = weightSlider.value;
+heightOutput.innerHTML = heightSlider.value;
+// Update sliders in real time while dragging it
+weightSlider.oninput = function () {
+  weightOutput.innerHTML = this.value;
+}
+heightSlider.oninput = function () {
+  heightOutput.innerHTML = this.value;
+}
+// Change weight-slider value on weight-number input
+function showValWeight(newVal) {
+  weightSlider.value=newVal;
+};
+// Change height-slider value on height-number input
+function showValHeight(newVal) {
+  heightSlider.value=newVal;
+};
+// *** Change number input when dragging slider ***
+// Add 2 eventListeners for weight and input sliders
+weightSlider.addEventListener("input", updateValueWeight);
+heightSlider.addEventListener("input", updateValueHeight);
+function updateValueWeight(e) {
+  weightOutput.value = e.srcElement.value;
+}
+function updateValueHeight(e) {
+  heightOutput.value = e.srcElement.value;
+}
+// Calculate BMI
+function calculateBmi() {
+  const weight = document.bmiForm.realweight.value;
+  const height = (document.bmiForm.realheight.value)/100;
+  const realbmi = (weight)/Math.pow(height, 2);
+  const realbmiOutput = document.getElementById("hasil");
+  const messageOutput = document.getElementById("evaluasi");
+  const roundedBmi = realbmi.toFixed(1);
+  messageOutput.innerHTML = ""; // Clear message before calculating new BMI
+  realbmiOutput.innerHTML = " " + roundedBmi; // Print BMI
+  // Appropriate message for your BMI rating
+
+ 
+  if (roundedBmi < 18) {
+    messageOutput.innerHTML = "Berat Badan Kamu kurang, Makan Yang banyak Ya.. ";
+  } else if (roundedBmi >= 18.5 && roundedBmi <= 24.9) {
+    messageOutput.innerHTML = "Berat Badan Kamu Normal, Tetap Olahraga";
+  } else if (roundedBmi >= 25 && roundedBmi <= 29.9) {
+    messageOutput.innerHTML = "Berat Badan Kamu Lebih, Dijaga ya makanan nya";
+  } else {
+    messageOutput.innerHTML = "Kamu Obesitas, Dijaga Pola Makan dan Rajin lah Olahraga";
+  }
+
+
+  console.log('Berat: ' + weight + " kg");
+  console.log('Tinggi: ' + height + " m");
+  console.log('BMI: ' + realbmi);
+}
+</script>
+
+</html>
